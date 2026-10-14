@@ -16,7 +16,7 @@ app.use(`${prefix}/sessions`, require('./routes/calendarRoutes'));
 app.use(`${prefix}/sessions`, require('./routes/bookingRoutes'));
 app.use(`${prefix}/sessions`, require('./routes/pricingRoutes'));
 app.use(`${prefix}/sessions`, require('./routes/availabilityRoutes')); // keep last (mentor-only gate) // keep last (mentor-only gate)
-
+app.use(`${prefix}/sessions`, require('./routes/feedbackRoutes'));
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use((req, res) => res.status(404).json({ success: false, message: 'Not found' }));
 app.use((err, _req, res, _next) => {

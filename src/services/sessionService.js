@@ -60,6 +60,7 @@ exports.closeSession = async (filter, reason) => {
   await LiveSession.updateOne({ _id: old._id }, { $set: { endReason: wasLive ? reason : 'never_started' } });
   // Sr 15 (Attendance) will refine no_show per participant
   await Booking.updateOne({ _id: old.bookingId, status: 'confirmed' }, { $set: { status: wasLive ? 'completed' : 'no_show' } });
+    await Attendance.closeAll(old.bookingId).catch(console.error);
     require('./recordingService').stop(old.bookingId, 'session_ended').catch(console.error);
   require('../models/Extension').updateMany({ bookingId: old.bookingId, status: 'requested' }, { $set: { status: 'expired' } }).catch(console.error);
   try { await video.endRoom(old.roomName); } catch (e) { console.error('endRoom failed', e.message); }

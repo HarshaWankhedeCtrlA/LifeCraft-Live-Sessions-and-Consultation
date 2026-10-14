@@ -6,7 +6,8 @@ const rec = require('../controller/recordingController');
 const chatC = require('../controller/chatController');
 const files = require('../controller/fileController');
 const { requireAuth, requireRole } = require('../middleware/auth');
-
+const att = require('../controller/attendanceController');
+const fb = require('../controller/feedbackController');
 router.use(requireAuth);
 
 router.get('/admin/reminders', requireRole('admin'), conf.listReminders);
@@ -42,5 +43,13 @@ router.post('/:bookingId/files', files.precheck, files.receive, files.upload);
 router.get('/:bookingId/files', files.list);
 router.get('/:bookingId/files/:fileId/download', files.download);
 router.delete('/:bookingId/files/:fileId', files.remove);
+
+// Sr 15
+router.post('/:bookingId/leave', att.leave);
+router.get('/:bookingId/attendance', att.list);
+
+// Sr 16
+router.post('/:bookingId/feedback', fb.submit);
+router.get('/:bookingId/feedback', fb.mine);
 
 module.exports = router;

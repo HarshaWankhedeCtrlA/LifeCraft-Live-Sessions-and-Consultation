@@ -80,7 +80,7 @@ exports.joinSession = async (req, res) => {
 
   const join = video.createJoinCredentials({ roomName: s.roomName, userId: req.user.id, expiresAt: +s.endsAt });
   await touch(s._id, role, 'joinedAt');
-
+  await Attendance.recordJoin(s.bookingId, req.user.id, role);
   // Session goes live on the first join at or after the scheduled start
   if (c.phase === 'in_progress')
     await LiveSession.updateOne({ _id: s._id, status: 'scheduled' }, { $set: { status: 'live', actualStart: new Date() } });
